@@ -7,14 +7,24 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-    url     = "file:./dev.db"
+    url    = "file:./dev.db"
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
 }
 
 model Product {
-  id Int @id @default(autoincrement())
-  name String
+  id          Int       @id @default(autoincrement())
+  name        String
   description String?
-  price Float
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  price       Float
+  categoryId  Int?
+  category    Category? @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
